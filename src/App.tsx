@@ -1,33 +1,42 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useSession } from './features/timer/useSession';
-import { isActivePhase, phaseDurationMs, type Phase } from './features/timer/machine';
-import { useSettings } from './features/settings/useSettings';
-import { useWakeLock } from './features/wake-lock/useWakeLock';
-import { haptics } from './features/feedback/haptics';
-import { sounds, unlockAudio } from './features/feedback/sound';
-import { IdleScreen } from './features/timer/screens/IdleScreen';
-import { ActiveScreen } from './features/timer/screens/ActiveScreen';
-import { PausedScreen } from './features/timer/screens/PausedScreen';
-import { FinishedScreen } from './features/timer/screens/FinishedScreen';
-import { SettingsSheet } from './features/settings/SettingsSheet';
-import { formatDurationAria } from './lib/format';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useSession } from "./features/timer/useSession";
+import {
+  isActivePhase,
+  phaseDurationMs,
+  type Phase,
+} from "./features/timer/machine";
+import { useSettings } from "./features/settings/useSettings";
+import { useWakeLock } from "./features/wake-lock/useWakeLock";
+import { haptics } from "./features/feedback/haptics";
+import { sounds, unlockAudio } from "./features/feedback/sound";
+import { IdleScreen } from "./features/timer/screens/IdleScreen";
+import { ActiveScreen } from "./features/timer/screens/ActiveScreen";
+import { PausedScreen } from "./features/timer/screens/PausedScreen";
+import { FinishedScreen } from "./features/timer/screens/FinishedScreen";
+import { SettingsSheet } from "./features/settings/SettingsSheet";
+import { formatDurationAria } from "./lib/format";
 
 const PHASE_ANNOUNCEMENTS: Record<Phase, string> = {
-  idle: 'Ready',
-  getReady: 'Preparing',
-  holding: 'Hold started',
-  transitioning: 'Change position now',
-  paused: 'Timer paused',
-  finished: 'Session done',
+  idle: "Ready",
+  getReady: "Preparing",
+  holding: "Hold started",
+  transitioning: "Change position now",
+  paused: "Timer paused",
+  finished: "Session done",
 };
 
 export default function App() {
   const { settings, update } = useSettings();
-  const { state, actions } = useSession(settings.holdSeconds, settings.transitionSeconds);
+  const { state, actions } = useSession(
+    settings.holdSeconds,
+    settings.transitionSeconds,
+  );
   const [settingsOpen, setSettingsOpen] = useState(false);
 
   useWakeLock(
-    settings.keepAwakeEnabled && state.phase !== 'idle' && state.phase !== 'finished',
+    settings.keepAwakeEnabled &&
+      state.phase !== "idle" &&
+      state.phase !== "finished",
   );
 
   // Phase-transition feedback. Debounced so catching up on phases missed in
@@ -43,11 +52,12 @@ export default function App() {
     if (now - lastFeedbackAt.current < 500) return;
 
     const holdStarted =
-      state.phase === 'holding' &&
-      prev.phase !== 'paused' &&
-      (prev.phase !== 'holding' || prev.cycle !== state.cycle);
-    const changePosition = state.phase === 'transitioning' && prev.phase === 'holding';
-    const sessionDone = state.phase === 'finished' && prev.phase !== 'finished';
+      state.phase === "holding" &&
+      prev.phase !== "paused" &&
+      (prev.phase !== "holding" || prev.cycle !== state.cycle);
+    const changePosition =
+      state.phase === "transitioning" && prev.phase === "holding";
+    const sessionDone = state.phase === "finished" && prev.phase !== "finished";
 
     if (holdStarted) {
       lastFeedbackAt.current = now;
@@ -62,7 +72,12 @@ export default function App() {
       if (settings.vibrationEnabled) haptics.stop();
       if (settings.soundEnabled) sounds.stop();
     }
-  }, [state.phase, state.cycle, settings.vibrationEnabled, settings.soundEnabled]);
+  }, [
+    state.phase,
+    state.cycle,
+    settings.vibrationEnabled,
+    settings.soundEnabled,
+  ]);
 
   // Audio contexts may only be created inside a user gesture.
   const handleStart = useCallback(() => {
@@ -83,8 +98,11 @@ export default function App() {
   return (
     <div className="h-full bg-bg text-fg">
       <div className="mx-auto h-full max-w-md px-6 pb-[max(env(safe-area-inset-bottom),1.25rem)] pt-[max(env(safe-area-inset-top),1.25rem)]">
-        {state.phase === 'idle' && (
-          <IdleScreen onStart={handleStart} onOpenSettings={() => setSettingsOpen(true)} />
+        {state.phase === "idle" && (
+          <IdleScreen
+            onStart={handleStart}
+            onOpenSettings={() => setSettingsOpen(true)}
+          />
         )}
         {isActivePhase(state.phase) && (
           <ActiveScreen
@@ -96,7 +114,7 @@ export default function App() {
             onTick={handleCountdownTick}
           />
         )}
-        {state.phase === 'paused' && (
+        {state.phase === "paused" && (
           <PausedScreen
             engine={state.engine}
             durationMs={phaseDurationMs(state)}
@@ -104,20 +122,28 @@ export default function App() {
             onStop={actions.stop}
           />
         )}
-        {state.phase === 'finished' && (
-          <FinishedScreen finalMs={state.finalMs ?? 0} onAgain={handleAgain} onDone={actions.done} />
+        {state.phase === "finished" && (
+          <FinishedScreen
+            finalMs={state.finalMs ?? 0}
+            onAgain={handleAgain}
+            onDone={actions.done}
+          />
         )}
       </div>
 
       {settingsOpen && (
-        <SettingsSheet settings={settings} onUpdate={update} onClose={() => setSettingsOpen(false)} />
+        <SettingsSheet
+          settings={settings}
+          onUpdate={update}
+          onClose={() => setSettingsOpen(false)}
+        />
       )}
 
       <p className="sr-only" role="status">
         {PHASE_ANNOUNCEMENTS[state.phase]}
-        {state.phase === 'finished' && state.finalMs !== null
+        {state.phase === "finished" && state.finalMs !== null
           ? `. Time in position: ${formatDurationAria(state.finalMs)}`
-          : ''}
+          : ""}
       </p>
     </div>
   );

@@ -69,6 +69,20 @@ PORT=3000 docker compose up -d
 
 The image is a multi-stage build: Node builds the static bundle, then an **unprivileged nginx (alpine)** serves it with strict security headers (CSP, `nosniff`, `Referrer-Policy`, `Permissions-Policy`). Multi-arch base images — runs on a VPS, home server, or Raspberry Pi.
 
+### Prebuilt image
+
+Every release is published to GitHub Container Registry (amd64 + arm64). If you prefer pulling over building from source:
+
+```yaml
+# compose.yaml
+services:
+  stillstance:
+    image: ghcr.io/nicolasduernbeck/stillstance:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+```
+
 ### HTTPS / reverse proxy
 
 The container serves plain HTTP and does **not** handle TLS. Terminate HTTPS at your reverse proxy (Caddy, Traefik, Nginx Proxy Manager):

@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useReducer } from 'react';
-import { elapsedMs } from './engine';
+import { useCallback, useEffect, useReducer } from "react";
+import { elapsedMs } from "./engine";
 import {
   INITIAL_SESSION,
   isActivePhase,
   phaseDurationMs,
   sessionReducer,
   type SessionState,
-} from './machine';
+} from "./machine";
 
 export interface SessionActions {
   start: () => void;
@@ -36,33 +36,42 @@ export function useSession(
     const check = () => {
       const remaining = duration - elapsedMs(state.engine, Date.now());
       if (remaining <= 0) {
-        dispatch({ type: 'PHASE_COMPLETE', now: Date.now() });
+        dispatch({ type: "PHASE_COMPLETE", now: Date.now() });
       } else {
         timeout = window.setTimeout(check, Math.min(remaining + 5, 500));
       }
     };
     check();
-    document.addEventListener('visibilitychange', check);
+    document.addEventListener("visibilitychange", check);
     return () => {
       clearTimeout(timeout);
-      document.removeEventListener('visibilitychange', check);
+      document.removeEventListener("visibilitychange", check);
     };
   }, [state]);
 
   const holdMs = holdSeconds * 1000;
   const transitionMs = transitionSeconds * 1000;
   const start = useCallback(
-    () => dispatch({ type: 'START', now: Date.now(), holdMs, transitionMs }),
+    () => dispatch({ type: "START", now: Date.now(), holdMs, transitionMs }),
     [holdMs, transitionMs],
   );
   const again = useCallback(
-    () => dispatch({ type: 'AGAIN', now: Date.now(), holdMs, transitionMs }),
+    () => dispatch({ type: "AGAIN", now: Date.now(), holdMs, transitionMs }),
     [holdMs, transitionMs],
   );
-  const pause = useCallback(() => dispatch({ type: 'PAUSE', now: Date.now() }), []);
-  const resume = useCallback(() => dispatch({ type: 'RESUME', now: Date.now() }), []);
-  const stop = useCallback(() => dispatch({ type: 'STOP', now: Date.now() }), []);
-  const done = useCallback(() => dispatch({ type: 'DONE' }), []);
+  const pause = useCallback(
+    () => dispatch({ type: "PAUSE", now: Date.now() }),
+    [],
+  );
+  const resume = useCallback(
+    () => dispatch({ type: "RESUME", now: Date.now() }),
+    [],
+  );
+  const stop = useCallback(
+    () => dispatch({ type: "STOP", now: Date.now() }),
+    [],
+  );
+  const done = useCallback(() => dispatch({ type: "DONE" }), []);
 
   return { state, actions: { start, pause, resume, stop, again, done } };
 }
