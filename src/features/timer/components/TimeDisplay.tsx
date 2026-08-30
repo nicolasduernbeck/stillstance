@@ -1,4 +1,4 @@
-import { formatDuration, formatDurationAria } from '../../../lib/format';
+import { formatDuration, formatDurationAria } from "../../../lib/format";
 
 interface TimeDisplayProps {
   ms: number;
@@ -10,7 +10,7 @@ export function TimeDisplay({ ms, dimmed = false }: TimeDisplayProps) {
     <div
       aria-label={formatDurationAria(ms)}
       className={`text-6xl font-extralight tracking-tight [font-variant-numeric:tabular-nums] sm:text-7xl ${
-        dimmed ? 'text-fg-secondary' : 'text-fg'
+        dimmed ? "text-fg-secondary" : "text-fg"
       }`}
     >
       {formatDuration(ms)}

@@ -4,7 +4,7 @@ Thanks for your interest! STILLSTANCE is deliberately small. The best contributi
 
 ## Scope guardrail
 
-The app does **one thing**: time an open-ended hold. Pull requests adding exercise libraries, workout plans, accounts, cloud sync, analytics, or social features will be declined kindly — they are out of scope by design, not by oversight.
+The app does **one thing**: pace stretch holds with a repeating countdown cycle. Pull requests adding exercise libraries, workout plans, accounts, cloud sync, analytics, or social features will be declined kindly — they are out of scope by design, not by oversight.
 
 Good contribution areas: timer accuracy, accessibility, PWA/wake-lock behavior on real devices, performance, documentation, translations of docs.
 
@@ -21,15 +21,15 @@ npm run dev
 
 ## Commands
 
-| Command | Purpose |
-| --- | --- |
-| `npm run dev` | Development server |
-| `npm test` | Run the test suite once |
-| `npm run test:watch` | Tests in watch mode |
-| `npm run lint` | ESLint |
-| `npm run typecheck` | TypeScript project check |
-| `npm run build` | Production build (also typechecks) |
-| `npm run preview` | Serve the production build locally |
+| Command              | Purpose                            |
+| -------------------- | ---------------------------------- |
+| `npm run dev`        | Development server                 |
+| `npm test`           | Run the test suite once            |
+| `npm run test:watch` | Tests in watch mode                |
+| `npm run lint`       | ESLint                             |
+| `npm run typecheck`  | TypeScript project check           |
+| `npm run build`      | Production build (also typechecks) |
+| `npm run preview`    | Serve the production build locally |
 
 ## Expectations for pull requests
 
@@ -42,7 +42,7 @@ npm run dev
 ## Architecture in 30 seconds
 
 - `src/features/timer/engine.ts` — pure timestamp math (`accumulatedMs` + `runningSince`). Never count ticks.
-- `src/features/timer/machine.ts` — reducer state machine (`idle → preparing → running ⇄ paused → finished`). Invalid events are ignored by design.
+- `src/features/timer/machine.ts` — reducer state machine (`idle → getReady → holding ⇄ transitioning`, plus `paused`/`finished`). Invalid events are ignored by design.
 - Hooks (`useSession`, `useElapsedSeconds`, `useWakeLock`) bridge the pure logic to React.
 - Screens render purely from machine state; there is no router.
 

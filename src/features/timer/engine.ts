@@ -5,7 +5,10 @@ export interface EngineState {
   readonly runningSince: number | null;
 }
 
-export const IDLE_ENGINE: EngineState = { accumulatedMs: 0, runningSince: null };
+export const IDLE_ENGINE: EngineState = {
+  accumulatedMs: 0,
+  runningSince: null,
+};
 
 export function startEngine(anchor: number): EngineState {
   return { accumulatedMs: 0, runningSince: anchor };
@@ -23,6 +26,7 @@ export function resumeEngine(state: EngineState, now: number): EngineState {
 
 export function elapsedMs(state: EngineState, now: number): number {
   // Negative deltas (device clock set back) clamp to 0 so elapsed never decreases.
-  const delta = state.runningSince === null ? 0 : Math.max(0, now - state.runningSince);
+  const delta =
+    state.runningSince === null ? 0 : Math.max(0, now - state.runningSince);
   return state.accumulatedMs + delta;
 }

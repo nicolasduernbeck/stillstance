@@ -1,18 +1,22 @@
-import type { ButtonHTMLAttributes } from 'react';
+import type { ButtonHTMLAttributes } from "react";
 
-type Variant = 'primary' | 'ghost' | 'danger';
+type Variant = "primary" | "ghost" | "danger";
 
 const VARIANT_CLASSES: Record<Variant, string> = {
-  primary: 'bg-accent text-black hover:brightness-105',
-  ghost: 'border border-line text-fg hover:border-fg-muted',
-  danger: 'border border-danger/50 text-danger hover:border-danger',
+  primary: "bg-accent text-black hover:brightness-105",
+  ghost: "border border-line text-fg hover:border-fg-muted",
+  danger: "border border-danger/50 text-danger hover:border-danger",
 };
 
 interface ControlButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
 }
 
-export function ControlButton({ variant = 'ghost', className = '', ...props }: ControlButtonProps) {
+export function ControlButton({
+  variant = "ghost",
+  className = "",
+  ...props
+}: ControlButtonProps) {
   return (
     <button
       type="button"

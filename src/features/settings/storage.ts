@@ -1,12 +1,14 @@
-import type { PrepSeconds, Settings } from '../../types';
+import type { HoldSeconds, Settings, TransitionSeconds } from '../../types';
 
-const KEY = 'stillstance:settings:v1';
+// v2: countdown-cycle settings (hold + transition) replaced the v1 prep-time model.
+const KEY = 'stillstance:settings:v2';
 
-export const PREP_OPTIONS: readonly PrepSeconds[] = [0, 3, 5, 10];
+export const HOLD_OPTIONS: readonly HoldSeconds[] = [15, 20, 30, 45, 60, 90, 120];
+export const TRANSITION_OPTIONS: readonly TransitionSeconds[] = [0, 5, 10, 15, 20, 30];
 
 export const DEFAULT_SETTINGS: Settings = {
-  prepSeconds: 3,
-  milestonesEnabled: false,
+  holdSeconds: 30,
+  transitionSeconds: 10,
   vibrationEnabled: true,
   soundEnabled: false,
   keepAwakeEnabled: true,
@@ -25,10 +27,12 @@ export function loadSettings(): Settings {
     if (typeof data !== 'object' || data === null) return DEFAULT_SETTINGS;
     const d = data as Record<string, unknown>;
     return {
-      prepSeconds: PREP_OPTIONS.includes(d.prepSeconds as PrepSeconds)
-        ? (d.prepSeconds as PrepSeconds)
-        : DEFAULT_SETTINGS.prepSeconds,
-      milestonesEnabled: bool(d.milestonesEnabled, DEFAULT_SETTINGS.milestonesEnabled),
+      holdSeconds: HOLD_OPTIONS.includes(d.holdSeconds as HoldSeconds)
+        ? (d.holdSeconds as HoldSeconds)
+        : DEFAULT_SETTINGS.holdSeconds,
+      transitionSeconds: TRANSITION_OPTIONS.includes(d.transitionSeconds as TransitionSeconds)
+        ? (d.transitionSeconds as TransitionSeconds)
+        : DEFAULT_SETTINGS.transitionSeconds,
       vibrationEnabled: bool(d.vibrationEnabled, DEFAULT_SETTINGS.vibrationEnabled),
       soundEnabled: bool(d.soundEnabled, DEFAULT_SETTINGS.soundEnabled),
       keepAwakeEnabled: bool(d.keepAwakeEnabled, DEFAULT_SETTINGS.keepAwakeEnabled),

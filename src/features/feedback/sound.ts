@@ -6,20 +6,20 @@ let ctx: AudioContext | null = null;
 export function unlockAudio(): void {
   try {
     ctx ??= new AudioContext();
-    if (ctx.state === 'suspended') void ctx.resume();
+    if (ctx.state === "suspended") void ctx.resume();
   } catch {
     ctx = null;
   }
 }
 
 function tone(frequency: number, durationMs: number, peak = 0.05): void {
-  if (!ctx || ctx.state !== 'running') return;
+  if (!ctx || ctx.state !== "running") return;
   try {
     const t0 = ctx.currentTime;
     const seconds = durationMs / 1000;
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
-    osc.type = 'sine';
+    osc.type = "sine";
     osc.frequency.value = frequency;
     gain.gain.setValueAtTime(0, t0);
     gain.gain.linearRampToValueAtTime(peak, t0 + 0.01);
@@ -35,6 +35,6 @@ function tone(frequency: number, durationMs: number, peak = 0.05): void {
 export const sounds = {
   countdownTick: () => tone(660, 90, 0.025),
   start: () => tone(880, 200),
-  milestone: () => tone(740, 160, 0.04),
+  nextPosition: () => tone(740, 160, 0.04),
   stop: () => tone(523.25, 280),
 };

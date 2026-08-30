@@ -4,36 +4,33 @@
 
 **Time in position.**
 
-A beautiful, privacy-first timer for open-ended stretch holds.
+A beautiful, privacy-first rhythm timer for stretch holds.
 
 </div>
 
 ---
 
-You don't know how long you'll hold a stretch — so STILLSTANCE counts **up**, not down. Press start, get into position during a short countdown, hold as long as you can, stop. That's the whole app. One purpose, zero distractions.
+STILLSTANCE gives your stretching a rhythm: a short countdown to get into position, a timed **hold**, a timed **transition** into the next position — repeating until you stop. No exercises, no plans, no accounts. One purpose, zero distractions.
 
 ## Screenshots
 
-<!-- Screenshots live in docs/screenshots/ (repo-hosted, no external image services).
-     Capture at ~390×844 (iPhone-ish portrait) from the production build.
+<!-- Repo-hosted screenshots (docs/screenshots/), regenerate with scripts/screenshots.mjs -->
 <p align="center">
-  <img src="docs/screenshots/idle.png" width="200" alt="Home screen" />
-  <img src="docs/screenshots/prepare.png" width="200" alt="Preparation countdown" />
-  <img src="docs/screenshots/running.png" width="200" alt="Active hold timer" />
-  <img src="docs/screenshots/finished.png" width="200" alt="Finished screen" />
+  <img src="docs/screenshots/idle.png" width="160" alt="Home screen" />
+  <img src="docs/screenshots/get-ready.png" width="160" alt="Get ready countdown" />
+  <img src="docs/screenshots/hold.png" width="160" alt="Hold countdown" />
+  <img src="docs/screenshots/next-position.png" width="160" alt="Next position transition" />
+  <img src="docs/screenshots/finished.png" width="160" alt="Finished screen with total time in position" />
 </p>
--->
-
-_Screenshots coming with the first release._
 
 ## Features
 
-- **Open-ended count-up timer** — no preset durations, no plans, no exercise library
-- **Automatic preparation countdown** (0/3/5/10 s) so you can get into position hands-free
-- **Accurate timing** — timestamp-derived, immune to tab throttling and backgrounding
-- **Pause / resume / repeat**
+- **Repeating hold cycle** — GET READY → HOLD → NEXT POSITION → HOLD → … until you stop
+- **Configurable rhythm** — hold duration (15–120 s) and transition time (0–30 s)
+- **Accurate timing** — timestamp-derived countdowns, immune to tab throttling and backgrounding
+- **Pause / resume** — continues with the exact remaining time
 - **Screen Wake Lock** — the display stays on while you hold (where supported)
-- **Optional feedback** — vibration, generated sounds, milestone cues at 30/60/90/120 s
+- **Optional feedback** — vibration and generated sounds on every phase change
 - **Offline-first installable PWA** — works with no connection at all
 - **Zero tracking, zero external requests, no account, no backend**
 - **Self-hostable** — one `docker compose up -d` away
@@ -93,7 +90,7 @@ stretch.example.com {
 ## Architecture
 
 - **Timer engine** ([src/features/timer/engine.ts](src/features/timer/engine.ts)) — elapsed time is always `accumulatedMs + (now − runningSince)`, computed from `Date.now()` timestamps. No tick counting, so rendering delays, browser throttling, and backgrounding cannot corrupt the time. Negative clock jumps are clamped.
-- **State machine** ([src/features/timer/machine.ts](src/features/timer/machine.ts)) — a hand-rolled reducer: `idle → preparing → running ⇄ paused → finished`. Invalid events are ignored, which eliminates double-tap races by construction.
+- **State machine** ([src/features/timer/machine.ts](src/features/timer/machine.ts)) — a hand-rolled reducer: `idle → getReady → holding ⇄ transitioning`, plus `paused` and `finished`. Phase handoffs are anchored gap-free at the exact deadline, and invalid events are ignored, which eliminates double-tap races by construction.
 - **Wake Lock** ([src/features/wake-lock/useWakeLock.ts](src/features/wake-lock/useWakeLock.ts)) — acquired during a session, re-acquired after visibility changes, silently absent on unsupported browsers.
 - **Settings** — a single versioned `localStorage` key with per-field fallback parsing.
 - **PWA** — `vite-plugin-pwa` precaches the entire build (~220 KB); the app is fully functional offline after the first visit.
@@ -102,14 +99,14 @@ Stack: Vite · React · TypeScript · Tailwind CSS. Runtime dependencies: `react
 
 ## Development
 
-| Command | Purpose |
-| --- | --- |
-| `npm run dev` | Development server |
-| `npm test` | Unit + component tests (Vitest) |
-| `npm run lint` | ESLint |
-| `npm run typecheck` | TypeScript check |
-| `npm run build` | Production build |
-| `npm run preview` | Serve the production build |
+| Command             | Purpose                         |
+| ------------------- | ------------------------------- |
+| `npm run dev`       | Development server              |
+| `npm test`          | Unit + component tests (Vitest) |
+| `npm run lint`      | ESLint                          |
+| `npm run typecheck` | TypeScript check                |
+| `npm run build`     | Production build                |
+| `npm run preview`   | Serve the production build      |
 
 CI runs lint, typecheck, tests, the production build, and a Docker build validation on every PR — no secrets required, forks work out of the box.
 

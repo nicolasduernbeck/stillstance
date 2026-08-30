@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        STILLSTANCE deliberately does one thing: time an open-ended hold.
+        STILLSTANCE deliberately does one thing: pace stretch holds with a repeating countdown cycle.
         Features outside that single purpose (exercise libraries, workout plans,
         accounts, cloud sync, analytics) are out of scope by design.
   - type: textarea

@@ -1,6 +1,6 @@
 import { useEffect, type ReactNode } from 'react';
-import type { PrepSeconds, Settings } from '../../types';
-import { PREP_OPTIONS } from './storage';
+import type { Settings } from '../../types';
+import { HOLD_OPTIONS, TRANSITION_OPTIONS } from './storage';
 
 interface SettingsSheetProps {
   settings: Settings;
@@ -14,6 +14,38 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
       <h3 className="text-xs font-medium uppercase tracking-[0.25em] text-fg-muted">{title}</h3>
       {children}
     </section>
+  );
+}
+
+function OptionGrid<T extends number>({
+  label,
+  options,
+  value,
+  onSelect,
+}: {
+  label: string;
+  options: readonly T[];
+  value: T;
+  onSelect: (option: T) => void;
+}) {
+  return (
+    <div className="grid grid-cols-4 gap-2" role="group" aria-label={label}>
+      {options.map((option) => (
+        <button
+          key={option}
+          type="button"
+          aria-pressed={value === option}
+          onClick={() => onSelect(option)}
+          className={`min-h-11 rounded-full border text-sm transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
+            value === option
+              ? 'border-accent text-accent'
+              : 'border-line text-fg-secondary hover:border-fg-muted'
+          }`}
+        >
+          {option}s
+        </button>
+      ))}
+    </div>
   );
 }
 
@@ -90,33 +122,25 @@ export function SettingsSheet({ settings, onUpdate, onClose }: SettingsSheetProp
         </div>
 
         <div className="space-y-8">
-          <Section title="Preparation">
-            <div className="grid grid-cols-4 gap-2" role="group" aria-label="Preparation time">
-              {PREP_OPTIONS.map((option: PrepSeconds) => (
-                <button
-                  key={option}
-                  type="button"
-                  aria-pressed={settings.prepSeconds === option}
-                  onClick={() => onUpdate({ prepSeconds: option })}
-                  className={`min-h-11 rounded-full border text-sm transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
-                    settings.prepSeconds === option
-                      ? 'border-accent text-accent'
-                      : 'border-line text-fg-secondary hover:border-fg-muted'
-                  }`}
-                >
-                  {option}s
-                </button>
-              ))}
-            </div>
+          <Section title="Hold duration">
+            <OptionGrid
+              label="Hold duration"
+              options={HOLD_OPTIONS}
+              value={settings.holdSeconds}
+              onSelect={(holdSeconds) => onUpdate({ holdSeconds })}
+            />
+          </Section>
+
+          <Section title="Transition time">
+            <OptionGrid
+              label="Transition time"
+              options={TRANSITION_OPTIONS}
+              value={settings.transitionSeconds}
+              onSelect={(transitionSeconds) => onUpdate({ transitionSeconds })}
+            />
           </Section>
 
           <Section title="Feedback">
-            <Toggle
-              label="Milestones"
-              description="Gentle cue at 30 / 60 / 90 / 120 s"
-              checked={settings.milestonesEnabled}
-              onChange={(v) => onUpdate({ milestonesEnabled: v })}
-            />
             <Toggle
               label="Vibration"
               checked={settings.vibrationEnabled}

@@ -7,12 +7,15 @@ import { TimeDisplay } from '../components/TimeDisplay';
 
 interface PausedScreenProps {
   engine: EngineState;
+  durationMs: number;
   onResume: () => void;
   onStop: () => void;
 }
 
-export function PausedScreen({ engine, onResume, onStop }: PausedScreenProps) {
+export function PausedScreen({ engine, durationMs, onResume, onStop }: PausedScreenProps) {
+  const durationSeconds = Math.round(durationMs / 1000);
   const seconds = useElapsedSeconds(engine, false);
+  const remaining = Math.max(0, durationSeconds - seconds);
 
   return (
     <div className="flex h-full flex-col items-center">
@@ -21,8 +24,8 @@ export function PausedScreen({ engine, onResume, onStop }: PausedScreenProps) {
       </header>
 
       <main className="flex flex-1 items-center justify-center">
-        <ProgressRing progress={(seconds % 60) / 60}>
-          <TimeDisplay ms={seconds * 1000} dimmed />
+        <ProgressRing progress={durationSeconds > 0 ? remaining / durationSeconds : 0}>
+          <TimeDisplay ms={remaining * 1000} dimmed />
         </ProgressRing>
       </main>
 

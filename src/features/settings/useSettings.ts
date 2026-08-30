@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'react';
-import type { Settings } from '../../types';
-import { loadSettings, saveSettings } from './storage';
+import { useCallback, useState } from "react";
+import type { Settings } from "../../types";
+import { loadSettings, saveSettings } from "./storage";
 
 export function useSettings(): {
   settings: Settings;

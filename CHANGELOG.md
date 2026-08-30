@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Timer is now a repeating countdown cycle (GET READY → HOLD → NEXT POSITION → …) with configurable hold duration (15–120 s) and transition time (0–30 s), replacing the open-ended count-up timer and milestone cues
+
 ## [0.1.0] - 2026-08-30
 
 ### Added

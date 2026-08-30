@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom/vitest';
+import "@testing-library/jest-dom/vitest";
 
 // Neither Node's experimental localStorage nor this jsdom setup provide a
 // working Storage — install a spec-compliant in-memory implementation.
@@ -26,7 +26,7 @@ class MemoryStorage {
 
 const storage = new MemoryStorage();
 for (const target of [globalThis, window] as const) {
-  Object.defineProperty(target, 'localStorage', {
+  Object.defineProperty(target, "localStorage", {
     value: storage,
     configurable: true,
     writable: true,

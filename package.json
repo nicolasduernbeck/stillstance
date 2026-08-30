@@ -2,7 +2,7 @@
   "name": "stillstance",
   "private": true,
   "version": "0.1.0",
-  "description": "Time in position. A privacy-first timer for open-ended stretch holds.",
+  "description": "Time in position. A privacy-first rhythm timer for stretch holds.",
   "license": "AGPL-3.0-only",
   "type": "module",
   "scripts": {
