@@ -49,7 +49,7 @@ STILLSTANCE is private by architecture, not by policy:
 Requires Node.js >= 22.
 
 ```bash
-git clone https://github.com/<you>/stillstance.git
+git clone https://github.com/nicolasduernbeck/stillstance.git
 cd stillstance
 npm ci
 npm run dev
