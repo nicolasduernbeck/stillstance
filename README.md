@@ -108,8 +108,6 @@ Stack: Vite · React · TypeScript · Tailwind CSS. Runtime dependencies: `react
 | `npm run build`     | Production build                |
 | `npm run preview`   | Serve the production build      |
 
-CI runs lint, typecheck, tests, the production build, and a Docker build validation on every PR — no secrets required, forks work out of the box.
-
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) — including the scope guardrail and the zero-dependency policy.
