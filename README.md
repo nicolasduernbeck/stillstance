@@ -49,7 +49,7 @@ STILLSTANCE is private by architecture, not by policy:
 Requires Node.js >= 22.
 
 ```bash
-git clone https://github.com/<you>/stillstance.git
+git clone https://github.com/nicolasduernbeck/stillstance.git
 cd stillstance
 npm ci
 npm run dev
@@ -107,8 +107,6 @@ Stack: Vite · React · TypeScript · Tailwind CSS. Runtime dependencies: `react
 | `npm run typecheck` | TypeScript check                |
 | `npm run build`     | Production build                |
 | `npm run preview`   | Serve the production build      |
-
-CI runs lint, typecheck, tests, the production build, and a Docker build validation on every PR — no secrets required, forks work out of the box.
 
 ## Contributing
 
