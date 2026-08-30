@@ -1,0 +1,40 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-bg: #0a0a0a;
+  --color-surface: #121212;
+  --color-fg: #f5f5f5;
+  --color-fg-secondary: #a3a3a3;
+  --color-fg-muted: #737373;
+  --color-line: #262626;
+  --color-accent: #b6ff3b;
+  --color-danger: #ff3b30;
+  --color-warn: #ff9500;
+  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+}
+
+/* Smooth per-second sweep between discrete ring updates. */
+@media (prefers-reduced-motion: no-preference) {
+  .ring-anim {
+    transition: stroke-dashoffset 1s linear;
+  }
+}

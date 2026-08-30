@@ -1,0 +1,14 @@
+# Keep the Docker build context minimal and reproducible from source only.
+node_modules
+dist
+dev-dist
+coverage
+.git
+.github
+docs
+*.md
+.editorconfig
+.gitignore
+.dockerignore
+Dockerfile
+compose.yaml

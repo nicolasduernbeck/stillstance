@@ -1,0 +1,29 @@
+name: Feature request
+description: Suggest an improvement
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        STILLSTANCE deliberately does one thing: time an open-ended hold.
+        Features outside that single purpose (exercise libraries, workout plans,
+        accounts, cloud sync, analytics) are out of scope by design.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This fits the "one purpose, zero distractions" philosophy.
+          required: true
