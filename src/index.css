@@ -39,3 +39,11 @@
     transition: stroke-dashoffset 1s linear;
   }
 }
+
+/* Scrollable but without a visible scrollbar (settings sheet). */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

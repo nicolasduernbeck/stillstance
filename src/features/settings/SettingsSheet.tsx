@@ -103,7 +103,7 @@ export function SettingsSheet({ settings, onUpdate, onClose }: SettingsSheetProp
         role="dialog"
         aria-modal="true"
         aria-labelledby="settings-title"
-        className="relative max-h-[85dvh] w-full max-w-md overflow-y-auto rounded-t-2xl border-t border-line bg-surface px-6 pb-[max(env(safe-area-inset-bottom),1.5rem)] pt-5"
+        className="no-scrollbar relative max-h-[85dvh] w-full max-w-md overflow-y-auto rounded-t-2xl border-t border-line bg-surface px-6 pb-[max(env(safe-area-inset-bottom),1.5rem)] pt-5"
       >
         <div className="mb-6 flex items-center justify-between">
           <h2 id="settings-title" className="text-sm font-semibold uppercase tracking-[0.3em] text-fg">
